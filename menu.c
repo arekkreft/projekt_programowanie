@@ -2,8 +2,39 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <windows.h>
+void opcja1()
+{
+    char tab[1000];
+    gets(tab);
 
-int main()
+        printf("%c",tab[0]);
+        for(int a=0; tab[a]!='EOF';a++)
+        {
+            if(tab[a]==' ')
+            {
+            printf("%c",tab[a+1]);
+            }
+
+            if(tab[a]=='\n')
+            {
+                gets(tab);
+                printf("%c",tab[0]);
+                    for(int b=0; tab[b]!='EOF';b++)
+                    {
+                        if(tab[b]==' ')
+                        {
+                        printf("%c",tab[b+1]);
+
+                        }
+
+                    }
+            }
+        }
+
+
+}
+
+void menu()
 {
     unsigned int seconds=10;
     for(int i=1;i<121;i++)
@@ -161,7 +192,43 @@ int main()
     }
     printf("\n");
     printf("Twoj wybor: ");
+}
+void wybieranie_opcji(int wybor)
+{
+    system("cls");
+    if(wybor==1)
+    {
+        printf("Wpisz tekst: \n");
+        opcja1();
+    }
+    else if(wybor==2)
+    {
+        printf("Wpisz tekst: \n");
+    }
+    else if(wybor==3)
+    {
+        printf("Wpisz tekst: \n");
+    }
+    else if(wybor==4)
+    {
+        printf("Wpisz tekst: \n");
+    }
+    else
+    {
+        printf("Podales nieprawidlowa wartosc, sprobuj jeszcze raz (prawidlowe wartosci to: 1,2,3,4) \n ");
+    }
+}
+int main()
+{
+
+    menu();
     int wybor;
     scanf("%d",&wybor);
+    wybieranie_opcji(wybor);
+
+
+
+
+
      return 0;
 }
