@@ -37,6 +37,34 @@ int pierwszalitera (char* words [ ], FILE* wynik, int wybor ){
     fprintf(wynik,"%s","\n");
 
     return 0;
+} 
+// zapisuje do pliku hasla z ostatnich liter wyrazow.
+
+int ostatnialitera ( char* words [ ], FILE* wynik, int wybor ){
+
+    if ( wybor == 4 ) {
+        int arr_el = 0;
+        while ( words [ arr_el ] != NULL ) arr_el++;
+        qsort ( words, arr_el , sizeof ( char* ), Cmp);
+    }
+
+    int itter = 0;
+    char* result = "";
+
+
+    while ( words [ itter ] != NULL ){
+        char word [ 256 ] = "";
+        strcat ( word, words [ itter ] );
+
+
+        printf ( "%c" , word [ strlen ( word ) - 1 ] );
+        fprintf (wynik, "%c" , word [ strlen ( word ) - 1 ] );
+        itter++;
+    }
+    printf ("\n");
+    fprintf (wynik,"%s","\n");
+
+    return 0;
 }
 
 int main ( ) {
