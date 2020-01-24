@@ -2,40 +2,56 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <windows.h>
-void opcja1()
-{
-    char tab[1000];
-    gets(tab);
 
-        printf("%c",tab[0]);
-        for(int a=0; tab[a]!='EOF';a++)
-        {
-            if(tab[a]==' ')
-            {
-            printf("%c",tab[a+1]);
-            }
-
-            if(tab[a]=='\n')
-            {
-                gets(tab);
-                printf("%c",tab[0]);
-                    for(int b=0; tab[b]!='EOF';b++)
-                    {
-                        if(tab[b]==' ')
-                        {
-                        printf("%c",tab[b+1]);
-
-                        }
-
-                    }
-            }
-        }
-
-
+ int Cmp(const void* a, const void* b) {
+    return strcmp(*(const char**)a, *(const char**)b);
 }
 
-void menu()
-{
+// zapisuje do pliku hasla z pierwszych liter wyrazow.
+
+int pierwszalitera (char* words [ ], FILE* wynik, int wybor ){
+
+    // Sortowanie 
+
+
+    if (wybor==3){
+        int arr_el = 0;
+        while(words[arr_el]!=NULL)arr_el++;
+        qsort(words,arr_el,sizeof(char*),Cmp);
+    }
+
+    int itter=0;
+    char* result="";
+
+    // Wpisywanie do pliku odpowiedniej litery slowa.
+
+    while(words[itter]!=NULL){
+        char word[256]="";
+        strcat(word,words[itter]);
+
+        printf("%c",word[0]);
+        fprintf(wynik,"%c",word[0]);
+        itter++;
+    }
+    printf("\n");
+    fprintf(wynik,"%s","\n");
+
+    return 0;
+}
+
+int main ( ) {
+
+    FILE* przyklad;
+    FILE* wynik;
+
+    // wybór plików do testów
+    przyklad = fopen( "plik.txt", "r" );
+    wynik = fopen ( "wynik.txt", "a" );
+
+    char buffer [ 256 ];
+//#############MENU###############
+    int wybor;
+    {
     unsigned int seconds=10;
     for(int i=1;i<121;i++)
     {
@@ -193,42 +209,48 @@ void menu()
     printf("\n");
     printf("Twoj wybor: ");
 }
-void wybieranie_opcji(int wybor)
-{
-    system("cls");
-    if(wybor==1)
+
+
+    scanf ( "%d", &wybor );
+    if(wybor>4||wybor<1)
     {
-        printf("Wpisz tekst: \n");
-        opcja1();
+        printf("Podales nieprawidlowa wartosc: %d sprobuj jeszcze raz(prawidlowe wartosci to: 1,2,3,4)",wybor);
+        return 0;
     }
-    else if(wybor==2)
-    {
-        printf("Wpisz tekst: \n");
+
+
+    // odczytywanie linii.
+
+    while ( fgets ( buffer, sizeof ( buffer ), przyklad ) ) {
+
+
+
+        char* line_1 = buffer;
+        char* line_2 = strtok( line_1, "\n" );
+        char* words [50];
+
+        char* line_w = strtok( line_2, " " );
+
+        int iter = 0;
+
+        while ( line_w != NULL ) {
+            words [ iter ] = line_w;
+            line_w = strtok( NULL, " " );
+            iter++;
+        }
+        words [ iter ] = line_w;
+        line_w = strtok( NULL, " " );
+
+
+
+        if ( wybor % 2 == 0 ) ostatnialitera ( words, wynik, wybor );
+        else pierwszalitera ( words, wynik, wybor );
+
+
+
     }
-    else if(wybor==3)
-    {
-        printf("Wpisz tekst: \n");
-    }
-    else if(wybor==4)
-    {
-        printf("Wpisz tekst: \n");
-    }
-    else
-    {
-        printf("Podales nieprawidlowa wartosc, sprobuj jeszcze raz (prawidlowe wartosci to: 1,2,3,4) \n ");
-    }
-}
-int main()
-{
-
-    menu();
-    int wybor;
-    scanf("%d",&wybor);
-    wybieranie_opcji(wybor);
-
-
-
-
-
-     return 0;
+    printf("\n WYNIK ZOSTAl ZAPISANY DO PLIKU WYNIKI.TXT");
+    fclose ( przyklad );
+    fclose ( wynik );
+    return 0;
 }
